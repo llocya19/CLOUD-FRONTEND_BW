@@ -1,0 +1,61 @@
+/* navbar.css */
+
+.navbar {
+  background-color: var(--color-plomo-oscuro);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+  color: var(--color-mostaza);
+  position: relative;
+  z-index: 100;
+}
+
+.navbar a,
+.navbar button {
+  color: var(--color-mostaza);
+  margin-right: 1.5rem;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 5px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.navbar a:hover,
+.navbar button:hover {
+  background-color: var(--color-mostaza);
+  color: var(--color-medio);
+}
+
+.navbar-menu {
+  position: absolute;
+  top: 100%;
+  right: 2rem;
+  background-color: var(--color-plomo-oscuro);
+  border: 1px solid var(--color-plomo-claro);
+  border-radius: 8px;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.7);
+  width: 180px;
+  display: none;
+  flex-direction: column;
+}
+
+.navbar-menu.show {
+  display: flex;
+}
+
+.navbar-menu a {
+  padding: 0.75rem 1rem;
+  color: var(--color-mostaza);
+}
+
+.navbar-menu a:hover {
+  background-color: var(--color-mostaza);
+  color: var(--color-medio);
+}

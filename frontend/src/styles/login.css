@@ -1,0 +1,68 @@
+.login-bg {
+  background-image: url('/images/logi.jpg'); /* pon una imagen relacionada con repuestos */
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-overlay {
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 2rem;
+  border-radius: 1rem;
+  width: 100%;
+  max-width: 420px;
+}
+
+.login-container {
+  background-color: #fff;
+  border-radius: 0.75rem;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0px 0px 18px rgba(0, 0, 0, 0.3);
+}
+
+.login-form input {
+  width: 100%;
+  padding: 0.75rem;
+  margin: 0.75rem 0;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+}
+
+.login-form button {
+  background-color: #d62828;
+  color: #fff;
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.login-form .logo {
+  width: 80px;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.subtitle {
+  color: #555;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.alert-error {
+  color: #fff;
+  background-color: #dc3545;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+}

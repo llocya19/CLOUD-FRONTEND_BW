@@ -1,0 +1,31 @@
+/* buttons.css */
+
+.btn {
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+  color: var(--color-blanco);
+  font-size: 1rem;
+}
+
+.btn-primary {
+  background-color: var(--color-mostaza);
+  color: var(--color-medio);
+}
+
+.btn-primary:hover {
+  background-color: #d4b839; /* mostaza oscuro */
+}
+
+.btn-danger {
+  background-color: var(--color-rojo);
+  color: var(--color-blanco);
+}
+
+.btn-danger:hover {
+  background-color: #9b000f; /* rojo oscuro */
+}
