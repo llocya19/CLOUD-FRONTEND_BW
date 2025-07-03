@@ -5,7 +5,14 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+const backendUrl = import.meta.env.VITE_API_URL;
 dayjs.extend(customParseFormat);
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+const ZONA = 'America/Lima';
 
 interface Venta {
   id: number;
@@ -71,13 +78,14 @@ const VentaList: React.FC = () => {
     }
   };
 
-  // ✅ Mostrar fecha tal como se guarda en BD (sin restar 5 horas)
+  // ✅ Formatea la fecha correctamente a hora local (Lima) sin adelantos
   const formatearFecha = (fecha: string) => {
     if (!fecha) return 'Fecha no disponible';
-    const fechaLocal = dayjs(fecha); // no usar utc() ni tz()
-    return fechaLocal.isValid()
-      ? fechaLocal.format('DD/MM/YYYY hh:mm A')
-      : 'Fecha inválida';
+
+    return dayjs
+      .utc(fecha, 'YYYY-MM-DD HH:mm:ss')
+      .tz(ZONA)
+      .format('DD/MM/YYYY hh:mm A');
   };
 
   const filtrarVentas = () => {
@@ -104,40 +112,42 @@ const VentaList: React.FC = () => {
         onChange={(e) => setFiltro(e.target.value)}
       />
 
-      <table className="table table-bordered table-hover table-striped">
-        <thead className="table-dark">
-          <tr>
-            <th>#</th>
-            <th>Cliente</th>
-            <th>Fecha y hora</th>
-            <th>Total</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filtrarVentas().map((v, i) => (
-            <tr key={v.id}>
-              <td>{i + 1}</td>
-              <td>{v.nombre}</td>
-              <td>{formatearFecha(v.fecha_venta)}</td>
-              <td>S/. {v.total.toFixed(2)}</td>
-              <td>
-                <Button variant="info" size="sm" onClick={() => verDetalle(v.id)}>
-                  Detalle
-                </Button>
-                <a
-                  href={`/api/ventas/${v.id}/boleta`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-success btn-sm ms-2"
-                >
-                  PDF
-                </a>
-              </td>
+      <div className="table-responsive">
+        <table className="table table-bordered table-hover table-striped">
+          <thead className="table-dark">
+            <tr>
+              <th>#</th>
+              <th>Cliente</th>
+              <th>Fecha y hora</th>
+              <th>Total</th>
+              <th>Acciones</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {filtrarVentas().map((v, i) => (
+              <tr key={v.id}>
+                <td>{i + 1}</td>
+                <td>{v.nombre}</td>
+                <td>{formatearFecha(v.fecha_venta)}</td>
+                <td>S/. {v.total.toFixed(2)}</td>
+                <td>
+                  <Button variant="info" size="sm" onClick={() => verDetalle(v.id)}>
+                    Detalle
+                  </Button>
+                  <a
+                    href={`${backendUrl}/api/ventas/${v.id}/boleta`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-success btn-sm ms-2"
+                  >
+                    PDF
+                  </a>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       {/* Modal Detalle */}
       <Modal show={showModal} onHide={() => setShowModal(false)} size="lg">

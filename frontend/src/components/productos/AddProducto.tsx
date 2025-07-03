@@ -4,7 +4,7 @@ import {
   actualizarProducto,
   verificarDuplicado
 } from '../../services/productosService';
-
+const backendUrl = import.meta.env.VITE_API_URL;
 interface Producto {
   id?: number;
   nombre: string;
@@ -313,7 +313,7 @@ const AddProducto: React.FC<Props> = ({
             {/* Mostrar imagen previa si está en modo edición y no se ha cargado una nueva */}
             {typeof producto.imagen === 'string' && producto.imagen && (
               <img
-                src={`http://localhost:5000${producto.imagen}`}
+                src={`${backendUrl}${producto.imagen}`}
                 alt="preview"
                 style={{ width: 60, height: 60, objectFit: 'cover', marginTop: '10px', borderRadius: '8px' }}
               />

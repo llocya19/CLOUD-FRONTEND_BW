@@ -1,38 +1,47 @@
+// frontend/src/services/productosService.ts
+
 import axios from 'axios';
 import { getCsrfToken } from './csrfService';
 
-const API = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_URL = import.meta.env.VITE_API_URL;
+if (!API_URL) {
+  throw new Error("⚠️ VITE_API_URL no está definido. Verifica tu archivo .env");
+}
 
-// Obtener todos los productos
-export const getProductos = () => axios.get(`${API}/api/productos`);
+const API = `${API_URL}/api/productos`;
 
-// Obtener productos con stock bajo (menor o igual a 5)
-export const listarStockBajo = () => axios.get(`${API}/api/productos/stock-bajo`);
+// 🟢 Obtener todos los productos
+export const getProductos = () => axios.get(API, {
+  withCredentials: true,
+});
 
-// Eliminar producto
+// 🟡 Obtener productos con stock bajo (≤ 5)
+export const listarStockBajo = () => axios.get(`${API}/stock-bajo`, {
+  withCredentials: true,
+});
+
+// 🔴 Eliminar producto por ID
 export const eliminarProducto = async (id: number) => {
   const csrfToken = await getCsrfToken();
-  return axios.delete(`${API}/api/productos/${id}`, {
-    headers: {
-      "X-CSRFToken": csrfToken
-    },
-    withCredentials: true
+  return axios.delete(`${API}/${id}`, {
+    headers: { "X-CSRFToken": csrfToken },
+    withCredentials: true,
   });
 };
 
-// Enviar nuevo producto con imagen (POST)
+// 🟢 Guardar nuevo producto con imagen (POST multipart)
 export const guardarProductoConImagen = async (formData: FormData) => {
   const csrfToken = await getCsrfToken();
-  return axios.post(`${API}/api/productos/upload`, formData, {
+  return axios.post(`${API}/upload`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
-      "X-CSRFToken": csrfToken
+      "X-CSRFToken": csrfToken,
     },
-    withCredentials: true
+    withCredentials: true,
   });
 };
 
-// Actualizar producto (PUT) con imagen o sin imagen
+// 🟡 Actualizar producto (PUT multipart)
 export const actualizarProducto = async (id: number, data: any) => {
   const csrfToken = await getCsrfToken();
   const formData = new FormData();
@@ -45,19 +54,23 @@ export const actualizarProducto = async (id: number, data: any) => {
     }
   }
 
-  return axios.put(`${API}/api/productos/${id}`, formData, {
+  return axios.put(`${API}/${id}`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
-      "X-CSRFToken": csrfToken
+      "X-CSRFToken": csrfToken,
     },
-    withCredentials: true
+    withCredentials: true,
   });
 };
 
-// Verificar si un campo (nombre o código de barra) está duplicado
+// 🔎 Verificar si el campo nombre o código de barra está duplicado
 export const verificarDuplicado = (campo: string, valor: string) =>
-  axios.get(`${API}/api/productos/duplicado?campo=${campo}&valor=${encodeURIComponent(valor)}`);
+  axios.get(`${API}/duplicado?campo=${campo}&valor=${encodeURIComponent(valor)}`, {
+    withCredentials: true,
+  });
 
-// Buscar producto por código de barras
+// 🔍 Buscar producto por código de barras
 export const buscarProductoPorCodigo = (codigo_barra: string) =>
-  axios.get(`${API}/api/productos/por-codigo/${codigo_barra}`);
+  axios.get(`${API}/por-codigo/${codigo_barra}`, {
+    withCredentials: true,
+  });

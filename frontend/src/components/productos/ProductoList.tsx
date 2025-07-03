@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getProductos, eliminarProducto, listarStockBajo } from '../../services/productosService';
-
+const backendUrl = import.meta.env.VITE_API_URL;
 interface Props {
   onEditar: (producto: any) => void;
   refreshKey: number;
@@ -118,7 +118,7 @@ const ProductoList: React.FC<Props> = ({ onEditar, refreshKey, showToast }) => {
                 <td>
                   {p.imagen ? (
                     <img
-                      src={`http://localhost:5000${p.imagen}`}
+                      src={`${backendUrl}${p.imagen}`}
                       alt="img"
                       className="rounded"
                       style={{ width: '40px', height: '40px', objectFit: 'cover' }}

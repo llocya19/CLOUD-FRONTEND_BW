@@ -1,12 +1,19 @@
 // frontend/src/services/categoriasService.ts
 
 import axios from 'axios';
-import { getCsrfToken } from './csrfService'; // asegúrate que este servicio exista
+import { getCsrfToken } from './csrfService';
 
-const API = '/api/categorias';
+const API_URL = import.meta.env.VITE_API_URL;
+if (!API_URL) {
+  throw new Error("⚠️ VITE_API_URL no está definido. Verifica tu archivo .env");
+}
+
+const API = `${API_URL}/api/categorias`;
 
 // Obtener todas las categorías
-export const getCategorias = () => axios.get(API);
+export const getCategorias = () => axios.get(API, {
+  withCredentials: true,
+});
 
 // Crear nueva categoría (con CSRF)
 export const createCategoria = async (data: any) => {

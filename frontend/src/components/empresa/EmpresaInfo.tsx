@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import empresaService from '../../services/empresaService';
 
-const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+const backendUrl = import.meta.env.VITE_API_URL;
 
 interface Empresa {
   nombre_comercial: string;
@@ -38,7 +38,7 @@ const EmpresaInfo: React.FC<Props> = ({ showToast }) => {
         if (res.data) {
           setForm(res.data);
           if (res.data.logo) {
-            setPreview(`${BASE_URL}/uploads/${res.data.logo}`);
+            setPreview(`${backendUrl}/uploads/${res.data.logo}`);
           }
         }
       } catch {

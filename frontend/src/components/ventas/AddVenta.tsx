@@ -14,7 +14,7 @@ interface ProductoVenta {
   nombre: string;
   precio_unitario: number;
   cantidad: number;
-  stock: number; // cantidad_disponible
+  stock: number;
 }
 
 interface Props {
@@ -64,7 +64,7 @@ const AddVenta: React.FC<Props> = ({ showToast }) => {
         nombre: p.nombre,
         precio_unitario: p.precio_unitario,
         cantidad: 1,
-        stock: p.cantidad_disponible // 👈 stock real desde backend
+        stock: p.cantidad_disponible
       }]);
       setCodigoBarra('');
     } catch {
@@ -182,41 +182,44 @@ const AddVenta: React.FC<Props> = ({ showToast }) => {
         <Button onClick={buscarProducto} label="Agregar Producto" className="btn-secondary mt-2" />
       </div>
 
-      <table className="table table-bordered">
-        <thead>
-          <tr>
-            <th>Producto</th>
-            <th>Precio</th>
-            <th>Stock</th>
-            <th>Cantidad</th>
-            <th>Subtotal</th>
-            <th>Acción</th>
-          </tr>
-        </thead>
-        <tbody>
-          {productos.map((p, i) => (
-            <tr key={i}>
-              <td>{p.nombre}</td>
-              <td>S/. {p.precio_unitario}</td>
-              <td>{p.stock}</td>
-              <td>
-                <input
-                  type="number"
-                  className="form-control"
-                  value={p.cantidad}
-                  min={1}
-                  max={p.stock}
-                  onChange={e => actualizarCantidad(i, parseInt(e.target.value))}
-                />
-              </td>
-              <td>S/. {(p.precio_unitario * p.cantidad).toFixed(2)}</td>
-              <td>
-                <button className="btn btn-danger" onClick={() => eliminarProducto(i)}>X</button>
-              </td>
+      {/* ✅ Tabla responsive */}
+      <div className="table-responsive">
+        <table className="table table-bordered">
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Precio</th>
+              <th>Stock</th>
+              <th>Cantidad</th>
+              <th>Subtotal</th>
+              <th>Acción</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {productos.map((p, i) => (
+              <tr key={i}>
+                <td>{p.nombre}</td>
+                <td>S/. {p.precio_unitario}</td>
+                <td>{p.stock}</td>
+                <td>
+                  <input
+                    type="number"
+                    className="form-control"
+                    value={p.cantidad}
+                    min={1}
+                    max={p.stock}
+                    onChange={e => actualizarCantidad(i, parseInt(e.target.value))}
+                  />
+                </td>
+                <td>S/. {(p.precio_unitario * p.cantidad).toFixed(2)}</td>
+                <td>
+                  <button className="btn btn-danger" onClick={() => eliminarProducto(i)}>X</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       {/* Totales */}
       <div className="mb-3">

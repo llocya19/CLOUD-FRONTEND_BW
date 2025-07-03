@@ -3,14 +3,21 @@
 import axios from 'axios';
 import { getCsrfToken } from './csrfService';
 
-const API = '/api/roles';
+const API_URL = import.meta.env.VITE_API_URL;
+if (!API_URL) {
+  throw new Error("⚠️ VITE_API_URL no está definido. Verifica tu archivo .env");
+}
 
-// Obtener todos los roles (no requiere CSRF)
+const API = `${API_URL}/api/roles`;
+
+// 🔵 Obtener todos los roles
 export const getRoles = async () => {
-  return await axios.get(API);
+  return await axios.get(API, {
+    withCredentials: true,
+  });
 };
 
-// Crear un nuevo rol (requiere CSRF)
+// 🟢 Crear nuevo rol (POST)
 export const createRole = async (data: any) => {
   const csrfToken = await getCsrfToken();
   return await axios.post(API, data, {
@@ -21,7 +28,7 @@ export const createRole = async (data: any) => {
   });
 };
 
-// Actualizar un rol existente (requiere CSRF)
+// 🟡 Actualizar rol (PUT)
 export const updateRole = async (id: number, data: any) => {
   const csrfToken = await getCsrfToken();
   return await axios.put(`${API}/${id}`, data, {
@@ -32,7 +39,7 @@ export const updateRole = async (id: number, data: any) => {
   });
 };
 
-// Eliminar un rol (requiere CSRF)
+// 🔴 Eliminar rol (DELETE)
 export const deleteRole = async (id: number) => {
   const csrfToken = await getCsrfToken();
   return await axios.delete(`${API}/${id}`, {

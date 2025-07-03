@@ -29,7 +29,7 @@ const Login: React.FC = () => {
     const res = await login(email, contraseña);
     console.log("🔐 Respuesta del login:", res);
 
-    if (res && res.data?.user_id) {
+    if (res && res.status === 200 && res.data?.user_id) {
       navigate('/otp-verify', {
         state: {
           user_id: res.data.user_id,
@@ -38,9 +38,16 @@ const Login: React.FC = () => {
     } else {
       setError('Correo o contraseña inválidos');
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error al iniciar sesión:', error);
-    setError('Ocurrió un error al iniciar sesión');
+
+    if (error.response?.status === 403) {
+      setError('Tu cuenta está inactiva. Contacta al administrador.');
+    } else if (error.response?.status === 401) {
+      setError('Correo o contraseña inválidos');
+    } else {
+      setError('Ocurrió un error al iniciar sesión');
+    }
   }
 };
 

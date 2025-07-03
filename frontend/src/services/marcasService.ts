@@ -1,11 +1,18 @@
 // frontend/src/services/marcasService.ts
+
 import axios from 'axios';
 import { getCsrfToken } from './csrfService';
 
-const API = '/api/marcas';
+// Validar que esté definida la variable de entorno
+const API_URL = import.meta.env.VITE_API_URL;
+if (!API_URL) {
+  throw new Error("⚠️ VITE_API_URL no está definido. Verifica tu archivo .env");
+}
+
+const API = `${API_URL}/api/marcas`;
 
 // GET: Listar marcas
-export const getMarcas = () => axios.get(API);
+export const getMarcas = () => axios.get(API, { withCredentials: true });
 
 // POST: Crear marca
 export const createMarca = async (data: any) => {

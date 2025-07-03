@@ -1,13 +1,21 @@
 // frontend/src/services/usuariosService.ts
 import axios from 'axios';
-import { getCsrfToken } from './csrfService'; // Asegúrate de tener este servicio
+import { getCsrfToken } from './csrfService';
 
-const API = '/api/usuarios';
+const API_URL = import.meta.env.VITE_API_URL;
+if (!API_URL) {
+  throw new Error("⚠️ VITE_API_URL no está definido. Verifica tu archivo .env");
+}
 
-// Obtener todos los usuarios
-export const getUsuarios = () => axios.get(API);
+const API = `${API_URL}/api/usuarios`;
+const API_ROLES = `${API_URL}/api/roles`;
 
-// Crear usuario (con CSRF)
+// 🔵 Obtener todos los usuarios
+export const getUsuarios = () => axios.get(API, {
+  withCredentials: true,
+});
+
+// 🟢 Crear usuario
 export const createUsuario = async (data: any) => {
   const csrfToken = await getCsrfToken();
   return axios.post(API, data, {
@@ -18,7 +26,7 @@ export const createUsuario = async (data: any) => {
   });
 };
 
-// Actualizar usuario (con CSRF)
+// 🟡 Actualizar usuario
 export const updateUsuario = async (id: number, data: any) => {
   const csrfToken = await getCsrfToken();
   return axios.put(`${API}/${id}`, data, {
@@ -29,7 +37,7 @@ export const updateUsuario = async (id: number, data: any) => {
   });
 };
 
-// Eliminar usuario (con CSRF)
+// 🔴 Eliminar usuario
 export const deleteUsuario = async (id: number) => {
   const csrfToken = await getCsrfToken();
   return axios.delete(`${API}/${id}`, {
@@ -40,8 +48,13 @@ export const deleteUsuario = async (id: number) => {
   });
 };
 
-// Obtener todos los roles
-export const getTodosRoles = () => axios.get('/api/roles');
+// 🎯 Obtener todos los roles
+export const getTodosRoles = () => axios.get(API_ROLES, {
+  withCredentials: true,
+});
 
-// Obtener roles asignados a un usuario
-export const getRolesPorUsuario = (id: number) => axios.get(`/api/usuarios/${id}/roles`);
+// 🎯 Obtener roles asignados a un usuario
+export const getRolesPorUsuario = (id: number) =>
+  axios.get(`${API}/${id}/roles`, {
+    withCredentials: true,
+  });
